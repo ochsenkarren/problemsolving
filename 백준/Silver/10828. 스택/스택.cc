@@ -9,35 +9,26 @@ int main() {
     for (int i = 0; i < N; i++) {
         std::string str;
         std::cin >> str;
-        auto idx = str.find("push");
-        if (idx != std::string::npos) {
+        if (str == "push") {
             int X;
             std::cin >> X;
             stack.push(X);
-            continue;
         }
-        idx = str.find("pop");
-        if (idx != std::string::npos) {
+        else if (str == "pop") {
             if (stack.empty())
                 std::cout << -1 << std::endl;
             else {
                 std::cout << stack.top() << std::endl;
                 stack.pop();
             }
-            continue;
         }
-        idx = str.find("empty");
-        if (idx != std::string::npos) {
+        else if (str == "empty") {
             std::cout << stack.empty() << std::endl;
-            continue;
         }
-        idx = str.find("size");
-        if (idx != std::string::npos) {
+        else if (str == "size") {
             std::cout << stack.size() << std::endl;
-            continue;
         }
-        idx = str.find("top");
-        if (idx != std::string::npos) {
+        else if (str == "top") {
             if (stack.empty())
                 std::cout << -1 << std::endl;
             else
