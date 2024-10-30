@@ -1,29 +1,26 @@
 #include <iostream>
-#include <sstream>
-
-void reversed_read(const char *c_str, int idx) {
-    while (0 < idx)
-        std::cout << c_str[--idx];
-}
-
-int main() {
+#include <stack>
+using namespace std;
+int main (void) {
     int T;
+    cin >> T;
+    cin.ignore();
 
-    std::string input;
-    std::getline(std::cin, input);
-    T = std::stoi(input);
-    
-    for (int i = 0; i < T; ++i) {
-        std::getline(std::cin, input);
-        std::stringstream iss(input);
-        std::string word;
-        iss >> word;
-        reversed_read(word.c_str(), word.size());
-        while (iss >> word) {
-            std::cout << " ";
-            reversed_read(word.c_str(), word.size());
+    for (int i = 0; i < T; i++) {
+        string s;
+        getline(cin, s);
+        s += '\n';
+        stack<char> st;
+        for (char ch : s) {
+            if (ch == ' ' || ch == '\n') {
+                while (!st.empty()) {
+                    cout << st.top();
+                    st.pop();
+                }
+                cout << ch;
+            }
+            else
+                st.push(ch);
         }
-        std::cout << std::endl;
     }
-    return 0;
 }
