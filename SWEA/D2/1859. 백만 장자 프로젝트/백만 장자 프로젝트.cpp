@@ -34,21 +34,6 @@
 #include <vector>
 using namespace std;
 
-long check(vector<int> &v, int &start, const int n) {
-    int max = 0, maxIdx = 0;
-    for (int i = start; i < n; i++) {
-        if (max <= v[i]) {
-            max = v[i];
-        	maxIdx = i;
-        }
-    }
-    long earn = 0;
-    for (int i = start; i < maxIdx; i++)
-        earn += (max - v[i]);
-    start = maxIdx + 1;   
-    return earn;
-}
-
 int main(int argc, char** argv)
 {
 	int test_case;
@@ -72,12 +57,24 @@ int main(int argc, char** argv)
         int N;       
         cin >> N;
         vector <int> v(N, 0);
+        
         for (int i = 0; i < N; ++i)
             cin >> v[i];
+        
         long earn = 0;
-        int i = 0;
-        while ( i < N)
-            earn += check(v, i, N);
+        int idx = N - 1;
+        
+        while (0 < idx) {
+            long add = 0;
+            int i = idx - 1;
+            
+            while (0 <= i && v[i] < v[idx]) {
+            		add += (v[idx] - v[i]);
+                	--i;
+            }
+            earn += add;
+            idx = i;
+        }
         cout << "#" << test_case << " " << earn << endl;
 	}
 	return 0;//정상종료시 반드시 0을 리턴해야합니다.
