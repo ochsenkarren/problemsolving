@@ -4,11 +4,12 @@
 
 using namespace std;
 int N;
-int toI(int n, int k) { return (n * (n + 1)) / 2 + k; }
+int sum(int n) { return (n * (n + 1)) / 2; }
+int toI(int n, int k) { return sum(n) + k; }
 
 int solution(vector<vector<int>> tri) {
     N = tri.size();
-    vector<int> v((N * (N + 1)) / 2, 0);
+    vector<int> v(sum(N), 0);
     v[0] = tri[0][0];
     for (int i = 1; i < N; ++i) {
         v[toI(i, 0)] = tri[i][0] + v[toI(i - 1, 0)];
@@ -18,7 +19,7 @@ int solution(vector<vector<int>> tri) {
         for (int j = 1; j < i; ++j)
             v[toI(i, j)] = max(v[toI(i - 1, j)], v[toI(i - 1, j - 1)]) + tri[i][j];
     int answer = 0;
-    for (int i = (N * (N - 1)) / 2; i < (N * (N + 1)) / 2; ++i)
+    for (int i = sum(N - 1); i < sum(N); ++i)
         answer = max(answer, v[i]);
     return answer;
 }
