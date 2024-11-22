@@ -1,30 +1,42 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <queue>
+#include <iostream>
 using namespace std;
-void go(vector<list<int>> &adj, vector<bool> visit, int node, int &count) {
+
+int traverse(vector<list<int>> &adjList, vector<bool> &visit, vector<int> &cnt, int node) {
     visit[node] = true;
-    ++count;
-    for (int a : adj[node])
-        if (!visit[a])
-            go(adj, visit, a, count);
+    int count = 1;
+    for (int adj : adjList[node]) {
+        if (!visit[adj])
+            count += traverse(adjList, visit, cnt, adj);
+    }
+    cnt[node] = count;
+    return count;
 }
 int solution(int n, vector<vector<int>> wires) {
+    
+    vector<list<int>> adjList(n + 1);
+    vector<int> cnt(n + 1, 0);
+    vector<bool> visit(n + 1, false);
+    int root;
+    for (int i = 0; i < wires.size(); ++i) {
+        int a = wires[i][0];
+        int b = wires[i][1];
+        adjList[a].push_back(b);
+        adjList[b].push_back(a);
+    }
+    for (int i = 1; i <= n; ++i) {
+        if (adjList[i].size() == 1) {
+            root = i;
+            break;
+        }            
+    }
+    cnt[root] = traverse(adjList, visit, cnt, root);
     int answer = n;
-    for (int exc = 0; exc < n - 1; ++exc) {
-        vector<bool> visit(n + 1, false);
-        vector<list<int>> adj(n + 1);
-        for (int i = 0; i < n - 1; ++i) {
-            if (i == exc)
-                continue;
-            int a = wires[i][0];
-            int b = wires[i][1];
-            adj[a].push_back(b);
-            adj[b].push_back(a);    
-        }
-        int cnt = 0;
-        go(adj, visit, 1, cnt);
-        int abs = n - cnt * 2;
+    for (int c : cnt) {
+        int abs = n - c * 2;
         abs = abs < 0 ? -abs : abs;
         if (abs < answer)
             answer = abs;
